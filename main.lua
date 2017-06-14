@@ -2,7 +2,7 @@ function love.load()
 	angulo = 0
 	escala = 300
 	
-	background = love.graphics.newImage("back8.png")
+	background = love.graphics.newImage("back.jpg")
 	bgsx = love.graphics.getWidth() / background:getWidth()
 	bgsy = love.graphics.getHeight() / background:getHeight()
 
