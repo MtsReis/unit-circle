@@ -1,7 +1,7 @@
 class.Triangulo()
 
 -- Propriedades padrões
-Triangulo.x = 	love.graphics.getWidth() / 2 / escala
+Triangulo.x = love.graphics.getWidth() / 2 / escala
 Triangulo.y = love.graphics.getHeight() / 2 / escala
 Triangulo.base = 1
 Triangulo.altura = 0.5

@@ -1,7 +1,7 @@
 class.Linha()
 
 -- Propriedades padrões
-Linha.x1 = 	love.graphics.getWidth() / 2 / escala
+Linha.x1 = love.graphics.getWidth() / 2 / escala
 Linha.y1 = love.graphics.getHeight() / 2 / escala
 Linha.x2 = Linha.x1 + 1
 Linha.y2 = Linha.y1

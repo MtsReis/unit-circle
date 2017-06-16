@@ -1,7 +1,7 @@
 class.Arco()
 
 -- Propriedades padrões
-Arco.x = 	love.graphics.getWidth() / 2 / escala
+Arco.x = love.graphics.getWidth() / 2 / escala
 Arco.y = love.graphics.getHeight() / 2 / escala
 Arco.angulo1 = 0
 Arco.angulo2 = 90

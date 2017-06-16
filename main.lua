@@ -12,7 +12,6 @@ function love.load()
 	require("classes/Linha")
 	require("classes/Triangulo")
 
-	-- Propriedades da circunferência
 	circ = Circunferencia()
 	xaxis = Linha()
 	yaxis = Linha()
@@ -22,13 +21,14 @@ function love.load()
 	cos = Linha()
 	angArco = Arco()
 
+	-- Propriedades
 	tangent.cor = {r = 255, g = 155, b = 0, a = 255}
 	sin.cor = {r = 255, g = 155, b = 155, a = 255}
 	cos.cor = {r = 255, g = 0, b = 55, a = 255}
 	triangulo.blendMode = 'add'
 
 	info1 = ''
-	info2 = 	''
+	info2 = ''
 	info3 = ''
 	info4 = ''
 end
@@ -37,35 +37,35 @@ function love.update(dt)
 	xaxis.y1 = circ.y
 	xaxis.x1 = 0
 	xaxis.y2 = circ.y
- xaxis.x2 = love.graphics.getWidth() / escala
+	xaxis.x2 = love.graphics.getWidth() / escala
 
 	yaxis.y1 = 0
 	yaxis.x1 = circ.x
 	yaxis.y2 = love.graphics.getHeight() / escala
- yaxis.x2 = circ.x
+	yaxis.x2 = circ.x
 
- tangent.x1 = circ.x + circ.raio
- tangent.y1 = circ.y
- tangent.x2 = tangent.x1
- tangent.y2 = tangent.y1 - math.tan(math.rad(angulo))
+	tangent.x1 = circ.x + circ.raio
+	tangent.y1 = circ.y
+	tangent.x2 = tangent.x1
+	tangent.y2 = tangent.y1 - math.tan(math.rad(angulo))
  
- sin.x1 = circ.x
- sin.y1 = circ.y
- sin.x2 = circ.x
- sin.y2 = sin.y1 - math.sin(math.rad(angulo))
+	sin.x1 = circ.x
+	sin.y1 = circ.y
+	sin.x2 = circ.x
+	sin.y2 = sin.y1 - math.sin(math.rad(angulo))
  
- cos.x1 = circ.x
- cos.y1 = circ.y
- cos.x2 = cos.x1 + math.cos(math.rad(angulo))
- cos.y2 = circ.y
+	cos.x1 = circ.x
+	cos.y1 = circ.y
+	cos.x2 = cos.x1 + math.cos(math.rad(angulo))
+	cos.y2 = circ.y
  
- angArco.angulo2 = angulo
+	angArco.angulo2 = angulo
  
- -- Calcula posicão da hipotenusa de acordo com os outroe valores
- triangulo.altura = math.sin(math.rad(angulo)) * circ.raio
- triangulo.base = math.cos(math.rad(angulo)) * circ.raio
+	-- Calcula posicão da hipotenusa de acordo com os outros valores
+	triangulo.altura = math.sin(math.rad(angulo)) * circ.raio
+	triangulo.base = math.cos(math.rad(angulo)) * circ.raio
  
- info1 = "Sin: "..tonumber(string.format("%.3f", math.sin(math.rad(angulo))))
+	info1 = "Sin: "..tonumber(string.format("%.3f", math.sin(math.rad(angulo))))
 	info2 = 	"Cos: "..tonumber(string.format("%.3f", math.cos(math.rad(angulo))))
 	info3 = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angulo))))
 	info4 = "Degree: "..tonumber(string.format("%.3f", angulo))
@@ -111,7 +111,7 @@ function love.keypressed(key)
 	
 	if angulo >= 360 then
  	angulo = 0
- elseif angulo < 0 then
+	elseif angulo < 0 then
  	angulo = 359
  end
 end
