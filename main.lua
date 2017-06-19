@@ -1,10 +1,6 @@
 function love.load()
 	angulo = 0
 	escala = 300
-	
-	background = love.graphics.newImage("back.jpg")
-	bgsx = love.graphics.getWidth() / background:getWidth()
-	bgsy = love.graphics.getHeight() / background:getHeight()
 
 	require("util")
 	require("classes/Arco")
@@ -73,11 +69,12 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.draw(background, 0, 0, 0, bgsx, bgsy)
+	gridDraw()
+	--love.graphics.draw(background, 0, 0, 0, bgsx, bgsy)
 	circ:draw()
 	angArco:draw()
-	xaxis:draw()
-	yaxis:draw()
+	--xaxis:draw()
+	--yaxis:draw()
 	triangulo:draw()
 	tangent:draw()
 	sin:draw()
