@@ -7,62 +7,55 @@ end
 function gridDraw()
 	-- Armazena cor atual.
 	local rD, gD, bD, aD = love.graphics.getColor()
-
-	-- Cor das unidades
-	love.graphics.setColor(255, 255, 255, 100)
-
+	
 	-- Pega dimensões da tela
 	screenW = love.graphics.getWidth()
 	screenH = love.graphics.getHeight()
 
-	-- Define o tamanho de cada unidade
+	-- Define o tamanho de cada décimo
 	gridLength = escala / 10
 
-	-- Valor que compensa posicionamento do grid caso as dimensões da tela não sejam divisíveis pelo gridLength
-	xOffset = (screenW % gridLength) / 2
-	yOffset = math.floor((screenH % gridLength) / 2)
-
-	-- Número de unidades que restam após dividir grid em dezenas
-	xRemainingGrids = math.ceil((screenW % escala) / gridLength)
-	xOffsetUnidades = xRemainingGrids / 2 * gridLength
-	yRemainingGrids = math.ceil((screenH % escala) / gridLength)
-	yOffsetUnidades = yRemainingGrids / 2 * gridLength
-
-	-- Linhas horizontais
-	for xPos = -xOffset, screenW, gridLength do
-		-- Caso a linha esteja no lugar de uma marcação de dezena (considerando offsets)
-		if ((xPos + xOffset) - xOffsetUnidades) % escala == 0 then
-			-- Cor das dezenas
-			love.graphics.setColor(255, 255, 255, 255)
-		end
-
-		-- Desenha a linha
-		love.graphics.line(xPos, 0, xPos, screenH)
-
-		-- Retorna à cor das unidades
-		love.graphics.setColor(255, 255, 255, 100)
+	-- Linha verticais
+	line = 0
+	for xPos = screenW/2, screenW, gridLength do
+		line = drawGridLine(line, xPos, true)
+	end
+	
+	line = 0
+	for xPos = screenW/2, 0, -gridLength do
+		line = drawGridLine(line, xPos, true)
 	end
 
-	-- Linhas verticais
-	for yPos = -yOffset, screenH, gridLength do
-		-- Caso a linha esteja no lugar de uma marcação de dezena (considerando offsets)
-		if ((yPos + yOffset) - yOffsetUnidades) % escala == 0 then
-			-- Cor das dezenas
-			love.graphics.setColor(255, 255, 255, 255)
-		end
-
-		-- Desenha a linha
-		love.graphics.line(0, yPos, screenW, yPos)
-
-		-- Retorna à cor das unidades
-		love.graphics.setColor(255, 255, 255, 100)
+	-- Linha horizontais
+	line = 0
+	for yPos = screenH/2, screenH, gridLength do
+		line = drawGridLine(line, yPos, false)
+	end
+	
+	line = 0
+	for yPos = screenH/2, 0, -gridLength do
+		line = drawGridLine(line, yPos, false)
 	end
 
-	-- Retorna a cor e BlendMode aos valores anteriores.
+	-- Retorna à cor padrao de execução.
 	love.graphics.setColor(rD, gD, bD, aD)
+end
 
-	love.graphics.print(screenH, 10, 5 * 80, 0, 5)
-	love.graphics.print(gridLength, 10, 6 * 80, 0, 5)
-	love.graphics.print(screenH % gridLength, 10, 7 * 80, 0, 5)
-	love.graphics.print(yOffset, 10, 8 * 80, 0, 5)
+function drawGridLine(lineNumber, pos, vert)
+	-- Aplica cor dos décimos
+	love.graphics.setColor(255, 255, 255, 100)
+
+	if lineNumber == 0 or lineNumber % 10 == 0 then
+		-- Cor das unidades
+		love.graphics.setColor(255, 255, 255, 255)
+	end
+
+	-- Desenha a linha
+	if vert then
+		love.graphics.line(pos, 0, pos, love.graphics.getHeight())
+	else
+		love.graphics.line(0, pos, love.graphics.getWidth(), pos)
+	end
+
+	return lineNumber + 1
 end
