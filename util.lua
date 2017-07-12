@@ -7,7 +7,7 @@ end
 function gridDraw()
 	-- Armazena cor atual.
 	local rD, gD, bD, aD = love.graphics.getColor()
-	
+
 	-- Pega dimensões da tela
 	screenW = love.graphics.getWidth()
 	screenH = love.graphics.getHeight()
@@ -20,7 +20,7 @@ function gridDraw()
 	for xPos = screenW/2, screenW, gridLength do
 		line = drawGridLine(line, xPos, true)
 	end
-	
+
 	line = 0
 	for xPos = screenW/2, 0, -gridLength do
 		line = drawGridLine(line, xPos, true)
@@ -31,7 +31,7 @@ function gridDraw()
 	for yPos = screenH/2, screenH, gridLength do
 		line = drawGridLine(line, yPos, false)
 	end
-	
+
 	line = 0
 	for yPos = screenH/2, 0, -gridLength do
 		line = drawGridLine(line, yPos, false)

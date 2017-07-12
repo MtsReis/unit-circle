@@ -15,7 +15,7 @@ function Arco:draw(dt)
 	-- Armazena cores e BlendMode atuais.
 	local rD, gD, bD, aD = love.graphics.getColor()
 	local blendD = love.graphics.getBlendMode()
-	
+
 	if self.info ~= '' and self.info ~= nil then
 		infoPos = infoPos + 1
 	end
