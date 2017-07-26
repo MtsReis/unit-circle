@@ -1,13 +1,11 @@
+require "gooi"
+
 function love.load()
 	love.keyboard.setKeyRepeat(true)
 
 	angulo = 0
 	escala = 300
 	useAcceleration = false
-	currentTouch = {
-		x = 0,
-		y = 0
-	}
 
 	require("util")
 	require("classes/Arco")
@@ -24,41 +22,6 @@ function love.load()
 	sin = Linha()
 	cos = Linha()
 	angArco = Arco()
-	
-	-- TODO: Add an active status
-	degreeBar = {
-		pos = {x = love.graphics.getWidth() * 0.04, y = love.graphics.getHeight() * 0.9},
-		width = love.graphics.getWidth() * 0.92,
-		height = 10,
-		mode = 'fill',
-		active = '',
-		cor = {r = 155, g = 155, b = 155, a = 255}
-	}
-	
-	degreeMark = {
-		pos = {x = degreeBar.pos.x, y = love.graphics.getHeight() * 0.9 - 50},
-		width = 50,
-		height = 100,
-		mode = 'fill',
-		cor = {r = 55, g = 55, b = 55, a = 255}
-	}
-
-	scaleBar = {
-		pos = {x = love.graphics.getWidth() * 0.96, y = love.graphics.getHeight() * 0.2},
-		width = 10,
-		height = love.graphics.getHeight() * 0.60,
-		mode = 'fill',
-		cor = {r = 155, g = 155, b = 155, a = 255}
-	}
-	
-	scaleMark = {
-		pos = {x = scaleBar.pos.x - 50, y = scaleBar.pos.y},
-		width = 100,
-		height = 50,
-		mode = 'fill',
-		cor = {r = 255, g = 55, b = 55, a = 255}
-	}
-
 
 	-- Propriedades
 	sin.cor = {r = 255, g = 75, b = 75, a = 255}
@@ -71,9 +34,29 @@ function love.load()
 	triangulo.blendMode = 'add'
 	sec.blendMode = 'add'
 	cosec.blendMode = 'add'
+
+	anguloSlider = gooi.newSlider({
+		value = angulo / 360,
+		x = love.graphics.getWidth() * 0.04,
+		y = love.graphics.getHeight() * 0.9,
+		w = love.graphics.getWidth() * 0.92,
+		h = love.graphics.getHeight() * 0.05
+	})
+
+	escalaSlider = gooi.newSlider({
+		value = 250/950,
+		x = love.graphics.getWidth() * 0.96,
+		y = love.graphics.getHeight() * 0.2,
+		w = anguloSlider.h,
+		h = love.graphics.getHeight() * 0.6
+	})
+
+	escalaSlider:vertical()
 end
 
 function love.update(dt)
+	gooi.update(dt)
+
 	-- Mantém a circunferência no centro em caso de alterações nas dimensões da tela
 	circ.x = love.graphics.getWidth() / 2 / escala
 	circ.y = love.graphics.getHeight() / 2 / escala
@@ -128,57 +111,23 @@ function love.update(dt)
 	-- Zera posição das infos a serem impressas no prox frame
 	infoPos = 0
 
-	-- Interação com barra
-	if currentTouch.id ~= nil then
-		currentTouch.x, currentTouch.y = love.touch.getPosition(currentTouch.id)
-		-- Ângulo
-		if (currentTouch.y > degreeBar.pos.y - 100 and currentTouch.x < scaleBar.pos.x) then
-			segments = degreeBar.width / 360
-			angulo = math.ceil((currentTouch.x - degreeBar.pos.x) / segments)
-			degreeMark.pos.x = currentTouch.x
-			
-			if degreeMark.pos.x < degreeBar.pos.x then
-				degreeMark.pos.x = degreeBar.pos.x
-			elseif degreeMark.pos.x > degreeBar.pos.x + degreeBar.width then
-				degreeMark.pos.x = degreeBar.pos.x + degreeBar.width
-			end
-		end
-		
-		-- Escala
-		if (currentTouch.x > scaleBar.pos.x - 100 and currentTouch.y < degreeBar.pos.y - 100) then
-			segments = scaleBar.height / 1000
-			escala = (currentTouch.y - scaleBar.pos.y) / segments
-			scaleMark.pos.y = currentTouch.y
-			
-			if scaleMark.pos.y < scaleBar.pos.y then
-				scaleMark.pos.y = scaleBar.pos.y
-			elseif scaleMark.pos.y > scaleBar.pos.y + scaleBar.height then
-				scaleMark.pos.y = scaleBar.pos.y + scaleBar.height
-			end
-		end
-		
-		-- Correção de ângulo pra barra
-		if angulo > 360 then
-			angulo = 360
-		elseif angulo < 0 then
-			angulo = 0
-		end
-	end
-	
-	
 	-- Correção global de ângulo
 	if angulo > 360 then
 		angulo = 0
 	elseif angulo < 0 then
 		angulo = 360
 	end
-	
+
 	-- Limita valores da escala
 	if escala <= 50 then
 		escala = 50
 	elseif escala >= 1000 then
 		escala = 1000
 	end
+
+	-- Pega valores dos sliders
+	angulo = anguloSlider:getValue() * 360
+	escala = (escalaSlider:getValue() * 950) + 50
 end
 
 function love.draw()
@@ -192,14 +141,7 @@ function love.draw()
 	cosec:draw()
 	sec:draw()
 	angArco:draw()
-	-- Degree Ui
-	love.graphics.rectangle(degreeBar.mode, degreeBar.pos.x, degreeBar.pos.y, degreeBar.width, degreeBar.height)
-	love.graphics.rectangle(degreeMark.mode, degreeMark.pos.x, degreeMark.pos.y, degreeMark.width, degreeMark.height)
-	
-	--Scale UI
-	love.graphics.rectangle(scaleBar.mode, scaleBar.pos.x, scaleBar.pos.y, scaleBar.width, scaleBar.height)
-	love.graphics.rectangle(scaleMark.mode, scaleMark.pos.x, scaleMark.pos.y, scaleMark.width, scaleMark.height)
-	love.graphics.print("Escala: "..tonumber(string.format("%.2f", escala)), 10, 0, 0, 5)
+	gooi.draw()
 end
 
 function love.joystickaxis(joystick, axis, value)
@@ -208,46 +150,5 @@ function love.joystickaxis(joystick, axis, value)
 	end
 end
 
-function love.keypressed(key, scancode, isrepeat)
-	-- Aumenta valor de alteração progressivamente
-	if isrepeat then
-		valueChange = valueChange + 0.1
-	else
-		valueChange = 1
-	end
-
-	-- Controle do ângulo
-	if key == "up" then
-		angulo = angulo + 1
-	elseif key == "down" then
-		angulo = angulo - 1
-	end
-
-	-- Controle da escala
-	if key == "i" then
-		escala = escala + valueChange
-	elseif key == "o" then
-		escala = escala - valueChange
-	end
-
-	-- Limita valores do ângulo
-	if angulo >= 360 then
-		angulo = 0
-	elseif angulo < 0 then
-		angulo = 359
-	end
-
-end
-
-function love.touchpressed(touchid)
-	if (currentTouch.y > degreeBar.pos.y - 100 and currentTouch.x < scaleBar.pos.x) then
-		degreeBar.active = touchid
-	end
- currentTouch.id = touchid
-end
-
-function love.touchreleased(touchid)
- currentTouch.id = nil
- degreeBar.active = ''
-end
-
+function love.mousepressed(x, y, button)  gooi.pressed() end
+function love.mousereleased(x, y, button) gooi.released() end
