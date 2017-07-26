@@ -111,19 +111,7 @@ function love.update(dt)
 	-- Zera posição das infos a serem impressas no prox frame
 	infoPos = 0
 
-	-- Correção global de ângulo
-	if angulo > 360 then
-		angulo = 0
-	elseif angulo < 0 then
-		angulo = 360
-	end
-
-	-- Limita valores da escala
-	if escala <= 50 then
-		escala = 50
-	elseif escala >= 1000 then
-		escala = 1000
-	end
+	angulo = math.ceil(angulo)
 
 	-- Pega valores dos sliders
 	angulo = anguloSlider:getValue() * 360
