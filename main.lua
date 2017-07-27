@@ -1,4 +1,4 @@
-require "gooi"
+require "lib/gooi"
 
 function love.load()
 	love.keyboard.setKeyRepeat(true)
@@ -38,6 +38,14 @@ function love.load()
 	triangulo.blendMode = 'add'
 	sec.blendMode = 'add'
 	cosec.blendMode = 'add'
+
+	checkPrecisao = gooi.newCheck({
+		text = "Precisão",
+		x = love.graphics.getWidth() * 0.04,
+		y = love.graphics.getHeight() * 0.95,
+		w = love.graphics.getWidth() * 0.1,
+		h = love.graphics.getHeight() * 0.05
+	})
 
 	escalaSlider = gooi.newSlider({
 		value = 250/950,
@@ -104,26 +112,24 @@ function love.update(dt)
 	triangulo.altura = math.sin(math.rad(angulo)) * circ.raio
 	triangulo.base = math.cos(math.rad(angulo)) * circ.raio
 
-	-- Zera posição das infos a serem impressas no prox frame
-	infoPos = 0
+	-- Atualiza ângulo se houver toque no touchscreen
 	if currentTouch.id ~= nil then
-		currentTouch.x, currentTouch.y = love.touch.getPosition(currentTouch.id)
-		if currentTouch.x < escalaSlider.x then
-			touchCo = love.graphics.getHeight()/2 - currentTouch.y
-			touchCa = currentTouch.x - love.graphics.getWidth()/2
-		
-			arcTg = math.atan2(touchCo, touchCa)
-			
-			if arcTg < 0 then
-				angulo = 360 + math.deg(arcTg)
-			else
-				angulo = math.deg(arcTg)
-			end
-		end
+		setAngle(love.touch.getPosition(currentTouch.id))
+	end
+
+	-- Atualiza ângulo se houve clique no mouse
+	if love.mouse.isDown(1) then
+		setAngle(love.mouse.getPosition())
+	end
+
+	if not checkPrecisao.checked then
+		angulo = math.ceil(angulo)
 	end
 
 	-- Pega valores dos sliders
 	escala = (escalaSlider:getValue() * 950) + 50
+	-- Zera posição das infos a serem impressas no prox frame
+	infoPos = 0
 end
 
 function love.draw()
@@ -138,6 +144,7 @@ function love.draw()
 	sec:draw()
 	angArco:draw()
 	gooi.draw()
+	love.graphics.print("Escala: "..escala, 10, 0, 0, 5)
 end
 
 function love.joystickaxis(joystick, axis, value)
@@ -145,9 +152,6 @@ function love.joystickaxis(joystick, axis, value)
 		angulo = angulo + value
 	end
 end
-
-function love.mousepressed(x, y, button)  gooi.pressed() end
-function love.mousereleased(x, y, button) gooi.released() end
 
 function love.touchpressed(touchid)
 	currentTouch.id = touchid
@@ -157,3 +161,5 @@ function love.touchreleased(touchid)
 	currentTouch.id = nil
 end
 
+function love.mousepressed(x, y, button)  gooi.pressed() end
+function love.mousereleased(x, y, button) gooi.released() end

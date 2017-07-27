@@ -59,3 +59,18 @@ function drawGridLine(lineNumber, pos, vert)
 
 	return lineNumber + 1
 end
+
+function setAngle(targetx, targety)
+	if targetx < escalaSlider.x and targety < checkPrecisao.y then
+		CatOp = love.graphics.getHeight()/2 - targety
+		CatAd = targetx - love.graphics.getWidth()/2
+
+		arcTg = math.atan2(CatOp, CatAd)
+
+		if arcTg < 0 then
+			angulo = 360 + math.deg(arcTg)
+		else
+			angulo = math.deg(arcTg)
+		end
+	end
+end
