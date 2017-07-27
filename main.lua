@@ -43,7 +43,7 @@ function love.load()
 		text = "Precisão",
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
-		w = 120,
+		w = love.graphics.getWidth() * 0.1,
 		h = love.graphics.getHeight() * 0.05
 	})
 
@@ -107,6 +107,12 @@ function love.update(dt)
 
 	angArco.angulo2 = angulo
 	angArco.info = "Degree: "..tonumber(string.format("%.3f", angulo))
+
+	checkPrecisao.x = love.graphics.getWidth() * 0.04
+	checkPrecisao.y = love.graphics.getHeight() * 0.95
+
+	escalaSlider.x = love.graphics.getWidth() * 0.96
+	escalaSlider.y = love.graphics.getHeight() * 0.2
 
 	-- Calcula posicão da hipotenusa de acordo com os outros valores
 	triangulo.altura = math.sin(math.rad(angulo)) * circ.raio
