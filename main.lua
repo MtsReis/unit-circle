@@ -5,7 +5,6 @@ function love.load()
 
 	angulo = 0
 	escala = 300
-	useAcceleration = false
 	currentTouch = {
 		x = 0,
 		y = 0
@@ -42,6 +41,14 @@ function love.load()
 	checkPrecisao = gooi.newCheck({
 		text = "Precisão",
 		x = love.graphics.getWidth() * 0.04,
+		y = love.graphics.getHeight() * 0.95,
+		w = love.graphics.getWidth() * 0.11,
+		h = love.graphics.getHeight() * 0.05
+	})
+
+	checkAccelerometer = gooi.newCheck({
+		text = "Acelerômetro",
+		x = love.graphics.getWidth() * 0.16,
 		y = love.graphics.getHeight() * 0.95,
 		w = love.graphics.getWidth() * 0.15,
 		h = love.graphics.getHeight() * 0.05
@@ -154,7 +161,7 @@ function love.draw()
 end
 
 function love.joystickaxis(joystick, axis, value)
-	if axis == 1 and useAcceleration then
+	if axis == 1 and checkAccelerometer.checked then
 		angulo = angulo + value
 	end
 end
