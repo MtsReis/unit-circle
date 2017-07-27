@@ -43,7 +43,7 @@ function love.load()
 		text = "Precisão",
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
-		w = love.graphics.getWidth() * 0.1,
+		w = 120,
 		h = love.graphics.getHeight() * 0.05
 	})
 
