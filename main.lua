@@ -92,25 +92,41 @@ function love.update(dt)
 	tangent.y1 = circ.y
 	tangent.x2 = tangent.x1
 	tangent.y2 = tangent.y1 - math.tan(math.rad(angulo))
-	tangent.info = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angulo))))
+	if (angulo == 90 or angulo == 270) then
+		tangent.info = "Tg: Indefinido"
+	else
+		tangent.info = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angulo))))
+	end
 
 	cotangent.x1 = circ.x
 	cotangent.y1 = circ.y - circ.raio
 	cotangent.x2 = cotangent.x1 + 1/math.tan(math.rad(angulo))
 	cotangent.y2 = cotangent.y1
-	cotangent.info = "Ctg: "..tonumber(string.format("%.3f", 1 / math.tan(math.rad(angulo))))
+	if (angulo == 0 or angulo == 360 or angulo == 180) then
+		cotangent.info = "Ctg: Indefinido"
+	else
+		cotangent.info = "Ctg: "..tonumber(string.format("%.3f", 1 / math.tan(math.rad(angulo))))
+	end
 
 	cosec.x1 = circ.x
 	cosec.y1 = circ.y
 	cosec.x2 = cotangent.x2
 	cosec.y2 = cotangent.y2
-	cosec.info = "Cosec: "..tonumber(string.format("%.3f", 1 / math.sin(math.rad(angulo))))
+	if (angulo == 0 or angulo == 360 or angulo == 180) then
+		cosec.info = "Cosec: Indefinido"
+	else
+		cosec.info = "Cosec: "..tonumber(string.format("%.3f", 1 / math.sin(math.rad(angulo))))
+	end
 
 	sec.x1 = circ.x
 	sec.y1 = circ.y
 	sec.x2 = tangent.x2
 	sec.y2 = tangent.y2
-	sec.info = "Sec: "..tonumber(string.format("%.3f", 1 / math.cos(math.rad(angulo))))
+	if (angulo == 90 or angulo == 270) then
+		sec.info = "Sec: Indefinido"
+	else
+		sec.info = "Sec: "..tonumber(string.format("%.3f", 1 / math.cos(math.rad(angulo))))
+	end
 
 	angArco.angulo2 = angulo
 	angArco.info = "Degree: "..tonumber(string.format("%.3f", angulo))
