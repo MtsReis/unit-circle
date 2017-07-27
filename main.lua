@@ -6,6 +6,10 @@ function love.load()
 	angulo = 0
 	escala = 300
 	useAcceleration = false
+	currentTouch = {
+		x = 0,
+		y = 0
+	}
 
 	require("util")
 	require("classes/Arco")
@@ -35,19 +39,11 @@ function love.load()
 	sec.blendMode = 'add'
 	cosec.blendMode = 'add'
 
-	anguloSlider = gooi.newSlider({
-		value = angulo / 360,
-		x = love.graphics.getWidth() * 0.04,
-		y = love.graphics.getHeight() * 0.9,
-		w = love.graphics.getWidth() * 0.92,
-		h = love.graphics.getHeight() * 0.05
-	})
-
 	escalaSlider = gooi.newSlider({
 		value = 250/950,
 		x = love.graphics.getWidth() * 0.96,
 		y = love.graphics.getHeight() * 0.2,
-		w = anguloSlider.h,
+		w = love.graphics.getHeight() * 0.05,
 		h = love.graphics.getHeight() * 0.6
 	})
 
@@ -110,11 +106,23 @@ function love.update(dt)
 
 	-- Zera posição das infos a serem impressas no prox frame
 	infoPos = 0
-
-	angulo = math.ceil(angulo)
+	if currentTouch.id ~= nil then
+		currentTouch.x, currentTouch.y = love.touch.getPosition(currentTouch.id)
+		if currentTouch.x < escalaSlider.x then
+			touchCo = love.graphics.getHeight()/2 - currentTouch.y
+			touchCa = currentTouch.x - love.graphics.getWidth()/2
+		
+			arcTg = math.atan2(touchCo, touchCa)
+			
+			if arcTg < 0 then
+				angulo = 360 + math.deg(arcTg)
+			else
+				angulo = math.deg(arcTg)
+			end
+		end
+	end
 
 	-- Pega valores dos sliders
-	angulo = anguloSlider:getValue() * 360
 	escala = (escalaSlider:getValue() * 950) + 50
 end
 
@@ -140,3 +148,12 @@ end
 
 function love.mousepressed(x, y, button)  gooi.pressed() end
 function love.mousereleased(x, y, button) gooi.released() end
+
+function love.touchpressed(touchid)
+	currentTouch.id = touchid
+end
+
+function love.touchreleased(touchid)
+	currentTouch.id = nil
+end
+
