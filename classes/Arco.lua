@@ -6,7 +6,7 @@ Arco.y = love.graphics.getHeight() / 2 / escala
 Arco.angulo1 = 0
 Arco.angulo2 = 90
 Arco.raio = 1
-Arco.cor = {r = 255, g = 255, b = 255, a = 255}
+Arco.cor = {r = 200, g = 255, b = 255, a = 255}
 Arco.info = ''
 Arco.drawMode = "line"
 Arco.blendMode = "alpha"

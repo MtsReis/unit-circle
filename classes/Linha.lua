@@ -7,7 +7,6 @@ Linha.x2 = Linha.x1 + 1
 Linha.y2 = Linha.y1
 Linha.cor = {r = 255, g = 255, b = 255, a = 255}
 Linha.info = ''
-Linha.drawMode = "fill"
 Linha.blendMode = "alpha"
 
 function Linha:draw(dt)

@@ -5,7 +5,7 @@ Triangulo.x = love.graphics.getWidth() / 2 / escala
 Triangulo.y = love.graphics.getHeight() / 2 / escala
 Triangulo.base = 1
 Triangulo.altura = 0.5
-Triangulo.cor = {r = 155, g = 155, b = 155, a = 255}
+Triangulo.cor = {r = 155, g = 155, b = 155, a = 155}
 Triangulo.drawMode = "fill"
 Triangulo.blendMode = "alpha"
 
