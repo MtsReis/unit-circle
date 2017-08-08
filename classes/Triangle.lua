@@ -1,25 +1,25 @@
-class.Triangulo()
+class.Triangle()
 
--- Propriedades padrões
-Triangulo.x = love.graphics.getWidth() / 2 / escala
-Triangulo.y = love.graphics.getHeight() / 2 / escala
-Triangulo.base = 1
-Triangulo.altura = 0.5
-Triangulo.cor = {r = 155, g = 155, b = 155, a = 155}
-Triangulo.drawMode = "fill"
-Triangulo.blendMode = "alpha"
+-- Default properties
+Triangle.x = love.graphics.getWidth() / 2 / scale
+Triangle.y = love.graphics.getHeight() / 2 / scale
+Triangle.base = 1
+Triangle.height = 0.5
+Triangle.color = {r = 155, g = 155, b = 155, a = 155}
+Triangle.drawMode = "fill"
+Triangle.blendMode = "alpha"
 
-function Triangulo:draw(dt)
-	-- Armazena cores e BlendMode atuais.
+function Triangle:draw(dt)
+	-- Save the corrent LÖVE color and blendmode
 	local rD, gD, bD, aD = love.graphics.getColor()
 	local blendD = love.graphics.getBlendMode()
 
-	-- Aplica as cores e BlendMode do objeto.
-	love.graphics.setColor(self.cor.r, self.cor.g, self.cor.b, self.cor.a)
+	-- Print the object and its info
+	love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
 	love.graphics.setBlendMode(self.blendMode)
-	love.graphics.polygon("fill", e(self.x), e(self.y), e(self.x + self.base), e(self.y), e(self.x + self.base), e(self.y - self.altura))
+	love.graphics.polygon("fill", e(self.x), e(self.y), e(self.x + self.base), e(self.y), e(self.x + self.base), e(self.y - self.height))
 
-	-- Retorna a cor e BlendMode aos valores anteriores.
+	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
 	love.graphics.setBlendMode(blendD)
 end

@@ -1,6 +1,6 @@
-require 'lib/pl'
+require 'lib/pl' --Penlight Library
 
 function love.conf(t)
-	t.window.title = "Círculo unitário"
+	t.window.title = "Unit Circle"
 	t.window.fullscreen = true
 end

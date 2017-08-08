@@ -1,21 +1,21 @@
---[[Retorna argumento com escala correta.
-todo: Verificar possibilidade do uso de metatables]]--
-function e(valor)
-	return valor * escala
+--[[Return the arg with the right scale
+todo: Check the possibility of using metatables]]--
+function e(value)
+	return value * scale
 end
 
 function gridDraw()
-	-- Armazena cor atual.
+	-- Save the corrent LÖVE color
 	local rD, gD, bD, aD = love.graphics.getColor()
 
-	-- Pega dimensões da tela
+	-- Get screen dimensions
 	screenW = love.graphics.getWidth()
 	screenH = love.graphics.getHeight()
 
-	-- Define o tamanho de cada décimo
-	gridLength = escala / 10
+	-- Define the size of decimals
+	gridLength = scale / 10
 
-	-- Linha verticais
+	-- Vertical lines
 	line = 0
 	for xPos = screenW/2, screenW, gridLength do
 		line = drawGridLine(line, xPos, true)
@@ -26,7 +26,7 @@ function gridDraw()
 		line = drawGridLine(line, xPos, true)
 	end
 
-	-- Linha horizontais
+	-- Horizontal lines
 	line = 0
 	for yPos = screenH/2, screenH, gridLength do
 		line = drawGridLine(line, yPos, false)
@@ -37,20 +37,20 @@ function gridDraw()
 		line = drawGridLine(line, yPos, false)
 	end
 
-	-- Retorna à cor padrao de execução.
+	-- Restore to the previous color
 	love.graphics.setColor(rD, gD, bD, aD)
 end
 
 function drawGridLine(lineNumber, pos, vert)
-	-- Aplica cor dos décimos
+	-- Apply the decimals color
 	love.graphics.setColor(255, 255, 255, 55)
 
 	if lineNumber == 0 or lineNumber % 10 == 0 then
-		-- Cor das unidades
+		-- unit color
 		love.graphics.setColor(255, 255, 255, 100)
 	end
 
-	-- Desenha a linha
+	-- Draw the line
 	if vert then
 		love.graphics.line(pos, 0, pos, love.graphics.getHeight())
 	else
@@ -61,16 +61,16 @@ function drawGridLine(lineNumber, pos, vert)
 end
 
 function setAngle(targetx, targety)
-	if targetx < escalaSlider.x and targety < checkPrecisao.y then
-		CatOp = love.graphics.getHeight()/2 - targety
-		CatAd = targetx - love.graphics.getWidth()/2
+	if targetx < scaleSlider.x and targety < precisionCheck.y then
+		opposite = love.graphics.getHeight()/2 - targety
+		adjacent = targetx - love.graphics.getWidth()/2
 
-		arcTg = math.atan2(CatOp, CatAd)
+		arcTg = math.atan2(opposite, adjacent)
 
 		if arcTg < 0 then
-			angulo = 360 + math.deg(arcTg)
+			angle = 360 + math.deg(arcTg)
 		else
-			angulo = math.deg(arcTg)
+			angle = math.deg(arcTg)
 		end
 	end
 end

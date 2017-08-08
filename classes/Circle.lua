@@ -1,24 +1,24 @@
-class.Circunferencia()
+class.Circle()
 
--- Propriedades padrões
-Circunferencia.x = love.graphics.getWidth() / 2 / escala
-Circunferencia.y = love.graphics.getHeight() / 2 / escala
-Circunferencia.raio = 1
-Circunferencia.cor = {r = 155, g = 155, b = 155, a = 255}
-Circunferencia.drawMode = "line"
-Circunferencia.blendMode = "alpha"
+-- Default properties
+Circle.x = love.graphics.getWidth() / 2 / scale
+Circle.y = love.graphics.getHeight() / 2 / scale
+Circle.radius = 1
+Circle.color = {r = 155, g = 155, b = 155, a = 255}
+Circle.drawMode = "line"
+Circle.blendMode = "alpha"
 
-function Circunferencia:draw(dt)
-	-- Armazena cores e BlendMode atuais.
+function Circle:draw(dt)
+	-- Save the corrent LÖVE color and blendmode
 	local rD, gD, bD, aD = love.graphics.getColor()
 	local blendD = love.graphics.getBlendMode()
 
-	-- Aplica as cores e BlendMode do objeto.
-	love.graphics.setColor(self.cor.r, self.cor.g, self.cor.b, self.cor.a)
+	-- Print the object and its info
+	love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
 	love.graphics.setBlendMode(self.blendMode)
-	love.graphics.circle(self.drawMode, e(self.x), e(self.y), e(self.raio))
+	love.graphics.circle(self.drawMode, e(self.x), e(self.y), e(self.radius))
 
-	-- Retorna a cor e BlendMode aos valores anteriores.
+	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
 	love.graphics.setBlendMode(blendD)
 end

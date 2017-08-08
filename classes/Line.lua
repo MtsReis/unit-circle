@@ -1,16 +1,16 @@
-class.Linha()
+class.Line()
 
 -- Propriedades padrões
-Linha.x1 = love.graphics.getWidth() / 2 / escala
-Linha.y1 = love.graphics.getHeight() / 2 / escala
-Linha.x2 = Linha.x1 + 1
-Linha.y2 = Linha.y1
-Linha.cor = {r = 255, g = 255, b = 255, a = 255}
-Linha.info = ''
-Linha.blendMode = "alpha"
+Line.x1 = love.graphics.getWidth() / 2 / scale
+Line.y1 = love.graphics.getHeight() / 2 / scale
+Line.x2 = Line.x1 + 1
+Line.y2 = Line.y1
+Line.color = {r = 255, g = 255, b = 255, a = 255}
+Line.info = ''
+Line.blendMode = "alpha"
 
-function Linha:draw(dt)
-	-- Armazena cores e BlendMode atuais.
+function Line:draw(dt)
+	-- Save the corrent LÖVE color and blendmode
 	local rD, gD, bD, aD = love.graphics.getColor()
 	local blendD = love.graphics.getBlendMode()
 
@@ -18,15 +18,15 @@ function Linha:draw(dt)
 		infoPos = infoPos + 1
 	end
 
-	-- Aplica as cores e BlendMode do objeto.
-	love.graphics.setColor(self.cor.r, self.cor.g, self.cor.b, self.cor.a)
+	-- Apply the object color and blendmode
+	love.graphics.setColor(self.color.r, self.color.g, self.color.b, self.color.a)
 	love.graphics.setBlendMode(self.blendMode)
 
-	-- Imprime objeto e info
+	-- Print the object and its info
 	love.graphics.line(e(self.x1), e(self.y1), e(self.x2), e(self.y2))
 	love.graphics.print(self.info, 10, infoPos * 80, 0, 5)
 
-	-- Retorna a cor e BlendMode aos valores anteriores.
+	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
 	love.graphics.setBlendMode(blendD)
 end

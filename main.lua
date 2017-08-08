@@ -1,52 +1,52 @@
 require "lib/gooi"
 
 function love.load()
-	angulo = 0
-	escala = 300
+	angle = 0
+	scale = 300
 	currentTouch = {
 		x = 0,
 		y = 0
 	}
 
 	require("util")
-	require("classes/Arco")
-	require("classes/Circunferencia")
-	require("classes/Linha")
-	require("classes/Triangulo")
+	require("classes/Arc")
+	require("classes/Circle")
+	require("classes/Line")
+	require("classes/Triangle")
 
-	circ = Circunferencia()
-	triangulo = Triangulo()
-	tangent = Linha()
-	cotangent = Linha()
-	sec = Linha()
-	cosec = Linha()
-	sin = Linha()
-	cos = Linha()
-	angArco = Arco()
-	angMarc = Arco()
+	unitCircle = Circle()
+	triangle = Triangle()
+	sine = Line()
+	cosine = Line()
+	tangent = Line()
+	cotangent = Line()
+	secant = Line()
+	cosecant = Line()
+	unitArc = Arc()
+	angMark = Arc()
 
-	-- Propriedades
-	sin.cor = {r = 255, g = 25, b = 25, a = 255}
-	cos.cor = {r = 25, g = 255, b = 25, a = 255}
-	tangent.cor = {r = 158, g = 102, b = 225, a = 255}
-	cotangent.cor = {r = 225, g = 178, b = 102, a = 255}
-	cosec.cor = {r = 255, g = 255, b = 102, a = 255}
-	sec.cor = {r = 102, g = 178, b = 255, a = 255}
+	-- Properties
+	sine.color = {r = 255, g = 25, b = 25, a = 255}
+	cosine.color = {r = 25, g = 255, b = 25, a = 255}
+	tangent.color = {r = 158, g = 102, b = 225, a = 255}
+	cotangent.color = {r = 225, g = 178, b = 102, a = 255}
+	cosecant.color = {r = 255, g = 255, b = 102, a = 255}
+	secant.color = {r = 102, g = 178, b = 255, a = 255}
 
-	triangulo.blendMode = 'add'
-	cos.blendMode = 'replace'
-	sec.blendMode = 'add'
-	cosec.blendMode = 'add'
+	triangle.blendMode = 'add'
+	cosine.blendMode = 'replace'
+	secant.blendMode = 'add'
+	cosecant.blendMode = 'add'
 
-	checkPrecisao = gooi.newCheck({
-		text = "Precisão",
+	precisionCheck = gooi.newCheck({
+		text = "Precision",
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
-		w = love.graphics.getWidth() * 0.11,
+		w = 120,
 		h = love.graphics.getHeight() * 0.05
 	})
 
-	escalaSlider = gooi.newSlider({
+	scaleSlider = gooi.newSlider({
 		value = 250/950,
 		x = love.graphics.getWidth() * 0.96,
 		y = love.graphics.getHeight() * 0.2,
@@ -54,124 +54,125 @@ function love.load()
 		h = love.graphics.getHeight() * 0.6
 	})
 
-	escalaSlider:vertical()
+	scaleSlider:vertical()
 end
 
 function love.update(dt)
 	gooi.update(dt)
 
-	-- Mantém a circunferência no centro em caso de alterações nas dimensões da tela
-	circ.x = love.graphics.getWidth() / 2 / escala
-	circ.y = love.graphics.getHeight() / 2 / escala
-	angArco.x = circ.x
-	angArco.y = circ.y
-	angMarc.x = circ.x
-	angMarc.y = circ.y
-	angMarc.raio = 0.1
-	triangulo.x = circ.x
-	triangulo.y = circ.y
+	-- Keep the circle centered in case of screen resolution changes
+	unitCircle.x = love.graphics.getWidth() / 2 / scale
+	unitCircle.y = love.graphics.getHeight() / 2 / scale
+	unitArc.x = unitCircle.x
+	unitArc.y = unitCircle.y
+	angMark.x = unitCircle.x
+	angMark.y = unitCircle.y
+	angMark.radius = 0.1
+	triangle.x = unitCircle.x
+	triangle.y = unitCircle.y
 
-	sin.x1 = circ.x
-	sin.y1 = circ.y
-	sin.x2 = circ.x
-	sin.y2 = sin.y1 - math.sin(math.rad(angulo))
-	sin.info = "Sin: "..tonumber(string.format("%.3f", math.sin(math.rad(angulo))))
+	sine.x1 = unitCircle.x
+	sine.y1 = unitCircle.y
+	sine.x2 = unitCircle.x
+	sine.y2 = sine.y1 - math.sin(math.rad(angle))
+	sine.info = "Sin: "..tonumber(string.format("%.3f", math.sin(math.rad(angle))))
 
-	cos.x1 = circ.x
-	cos.y1 = circ.y
-	cos.x2 = cos.x1 + math.cos(math.rad(angulo))
-	cos.y2 = circ.y
-	cos.info = 	"Cos: "..tonumber(string.format("%.3f", math.cos(math.rad(angulo))))
+	cosine.x1 = unitCircle.x
+	cosine.y1 = unitCircle.y
+	cosine.x2 = cosine.x1 + math.cos(math.rad(angle))
+	cosine.y2 = unitCircle.y
+	cosine.info = 	"Cos: "..tonumber(string.format("%.3f", math.cos(math.rad(angle))))
 
-	tangent.x1 = circ.x + circ.raio
-	tangent.y1 = circ.y
+	tangent.x1 = unitCircle.x + unitCircle.radius
+	tangent.y1 = unitCircle.y
 	tangent.x2 = tangent.x1
-	tangent.y2 = tangent.y1 - math.tan(math.rad(angulo))
-	if (angulo == 90 or angulo == 270) then
-		tangent.info = "Tg: Indefinido"
+	tangent.y2 = tangent.y1 - math.tan(math.rad(angle))
+	if (angle == 90 or angle == 270) then
+		tangent.info = "Tg: Undefined"
 	else
-		tangent.info = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angulo))))
+		tangent.info = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angle))))
 	end
 
-	cotangent.x1 = circ.x
-	cotangent.y1 = circ.y - circ.raio
-	cotangent.x2 = cotangent.x1 + 1/math.tan(math.rad(angulo))
+	cotangent.x1 = unitCircle.x
+	cotangent.y1 = unitCircle.y - unitCircle.radius
+	cotangent.x2 = cotangent.x1 + 1/math.tan(math.rad(angle))
 	cotangent.y2 = cotangent.y1
-	if (angulo == 0 or angulo == 360 or angulo == 180) then
-		cotangent.info = "Ctg: Indefinido"
+	if (angle == 0 or angle == 360 or angle == 180) then
+		cotangent.info = "Ctg: Undefined"
 	else
-		cotangent.info = "Ctg: "..tonumber(string.format("%.3f", 1 / math.tan(math.rad(angulo))))
+		cotangent.info = "Ctg: "..tonumber(string.format("%.3f", 1 / math.tan(math.rad(angle))))
 	end
 
-	cosec.x1 = circ.x
-	cosec.y1 = circ.y
-	cosec.x2 = cotangent.x2
-	cosec.y2 = cotangent.y2
-	if (angulo == 0 or angulo == 360 or angulo == 180) then
-		cosec.info = "Cosec: Indefinido"
+	cosecant.x1 = unitCircle.x
+	cosecant.y1 = unitCircle.y
+	cosecant.x2 = cotangent.x2
+	cosecant.y2 = cotangent.y2
+	if (angle == 0 or angle == 360 or angle == 180) then
+		cosecant.info = "Cosec: Undefined"
 	else
-		cosec.info = "Cosec: "..tonumber(string.format("%.3f", 1 / math.sin(math.rad(angulo))))
+		cosecant.info = "Cosec: "..tonumber(string.format("%.3f", 1 / math.sin(math.rad(angle))))
 	end
 
-	sec.x1 = circ.x
-	sec.y1 = circ.y
-	sec.x2 = tangent.x2
-	sec.y2 = tangent.y2
-	if (angulo == 90 or angulo == 270) then
-		sec.info = "Sec: Indefinido"
+	secant.x1 = unitCircle.x
+	secant.y1 = unitCircle.y
+	secant.x2 = tangent.x2
+	secant.y2 = tangent.y2
+	if (angle == 90 or angle == 270) then
+		secant.info = "Sec: Undefined"
 	else
-		sec.info = "Sec: "..tonumber(string.format("%.3f", 1 / math.cos(math.rad(angulo))))
+		secant.info = "Sec: "..tonumber(string.format("%.3f", 1 / math.cos(math.rad(angle))))
 	end
 
-	angArco.angulo2 = angulo
-	angArco.info = "Ângulo: "..tonumber(string.format("%.3f", angulo)).."°"
+	unitArc.angle2 = angle
+	unitArc.info = "Angle: "..tonumber(string.format("%.3f", angle)).."°"
 
-	angMarc.angulo2 = angulo
+	angMark.angle2 = angle
 
-	checkPrecisao.x = love.graphics.getWidth() * 0.04
-	checkPrecisao.y = love.graphics.getHeight() * 0.95
+	precisionCheck.x = love.graphics.getWidth() * 0.04
+	precisionCheck.y = love.graphics.getHeight() * 0.95
 
-	escalaSlider.x = love.graphics.getWidth() * 0.96
-	escalaSlider.y = love.graphics.getHeight() * 0.2
+	scaleSlider.x = love.graphics.getWidth() * 0.96
+	scaleSlider.y = love.graphics.getHeight() * 0.2
 
-	-- Calcula posicão da hipotenusa de acordo com os outros valores
-	triangulo.altura = math.sin(math.rad(angulo)) * circ.raio
-	triangulo.base = math.cos(math.rad(angulo)) * circ.raio
+	-- Calculate the hypotenuse position
+	triangle.height = math.sin(math.rad(angle)) * unitCircle.radius
+	triangle.base = math.cos(math.rad(angle)) * unitCircle.radius
 
-	-- Atualiza ângulo se houver toque no touchscreen
+	-- Update the angle if the screen is being touched
 	if currentTouch.id ~= nil then
 		setAngle(love.touch.getPosition(currentTouch.id))
 	end
 
-	-- Atualiza ângulo se houve clique no mouse
+	-- Update the angle if the mouse button 1 is being pressed
 	if love.mouse.isDown(1) then
 		setAngle(love.mouse.getPosition())
 	end
 
-	if not checkPrecisao.checked then
-		angulo = math.ceil(angulo)
+	if not precisionCheck.checked then
+		angle = math.ceil(angle)
 	end
 
-	-- Pega valores dos sliders
-	escala = (escalaSlider:getValue() * 950) + 50
-	-- Zera posição das infos a serem impressas no prox frame
+	-- Get the sliders values
+	scale = (scaleSlider:getValue() * 950) + 50
+
+	-- Reset the info printing position for the next frame
 	infoPos = 0
 end
 
 function love.draw()
 	gridDraw()
-	circ:draw()
-	triangulo:draw()
-	angArco:draw()
-	angMarc:draw()
-	sin:draw()
-	cos:draw()
+	unitCircle:draw()
+	triangle:draw()
+	unitArc:draw()
+	angMark:draw()
+	sine:draw()
+	cosine:draw()
 	tangent:draw()
 	cotangent:draw()
-	cosec:draw()
-	sec:draw()
+	cosecant:draw()
+	secant:draw()
 	gooi.draw()
-	love.graphics.print("Escala: "..escala, 10, 0, 0, 5)
+	love.graphics.print("Scale: "..scale, 10, 0, 0, 5)
 end
 
 function love.touchpressed(touchid)
