@@ -1,8 +1,6 @@
 require "lib/gooi"
 
 function love.load()
-	love.keyboard.setKeyRepeat(true)
-
 	angulo = 0
 	escala = 300
 	currentTouch = {
@@ -25,16 +23,18 @@ function love.load()
 	sin = Linha()
 	cos = Linha()
 	angArco = Arco()
+	angMarc = Arco()
 
 	-- Propriedades
-	sin.cor = {r = 255, g = 75, b = 75, a = 255}
-	cos.cor = {r = 102, g = 255, b = 102, a = 255}
+	sin.cor = {r = 255, g = 25, b = 25, a = 255}
+	cos.cor = {r = 25, g = 255, b = 25, a = 255}
 	tangent.cor = {r = 158, g = 102, b = 225, a = 255}
 	cotangent.cor = {r = 225, g = 178, b = 102, a = 255}
 	cosec.cor = {r = 255, g = 255, b = 102, a = 255}
 	sec.cor = {r = 102, g = 178, b = 255, a = 255}
 
 	triangulo.blendMode = 'add'
+	cos.blendMode = 'replace'
 	sec.blendMode = 'add'
 	cosec.blendMode = 'add'
 
@@ -43,14 +43,6 @@ function love.load()
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
 		w = love.graphics.getWidth() * 0.11,
-		h = love.graphics.getHeight() * 0.05
-	})
-
-	checkAccelerometer = gooi.newCheck({
-		text = "Acelerômetro",
-		x = love.graphics.getWidth() * 0.16,
-		y = love.graphics.getHeight() * 0.95,
-		w = love.graphics.getWidth() * 0.15,
 		h = love.graphics.getHeight() * 0.05
 	})
 
@@ -73,6 +65,9 @@ function love.update(dt)
 	circ.y = love.graphics.getHeight() / 2 / escala
 	angArco.x = circ.x
 	angArco.y = circ.y
+	angMarc.x = circ.x
+	angMarc.y = circ.y
+	angMarc.raio = 0.1
 	triangulo.x = circ.x
 	triangulo.y = circ.y
 
@@ -129,7 +124,9 @@ function love.update(dt)
 	end
 
 	angArco.angulo2 = angulo
-	angArco.info = "Degree: "..tonumber(string.format("%.3f", angulo))
+	angArco.info = "Ângulo: "..tonumber(string.format("%.3f", angulo)).."°"
+
+	angMarc.angulo2 = angulo
 
 	checkPrecisao.x = love.graphics.getWidth() * 0.04
 	checkPrecisao.y = love.graphics.getHeight() * 0.95
@@ -165,21 +162,16 @@ function love.draw()
 	gridDraw()
 	circ:draw()
 	triangulo:draw()
+	angArco:draw()
+	angMarc:draw()
 	sin:draw()
 	cos:draw()
 	tangent:draw()
 	cotangent:draw()
 	cosec:draw()
 	sec:draw()
-	angArco:draw()
 	gooi.draw()
 	love.graphics.print("Escala: "..escala, 10, 0, 0, 5)
-end
-
-function love.joystickaxis(joystick, axis, value)
-	if axis == 1 and checkAccelerometer.checked then
-		angulo = angulo + value
-	end
 end
 
 function love.touchpressed(touchid)
