@@ -43,11 +43,11 @@ end
 
 function drawGridLine(lineNumber, pos, vert)
 	-- Aplica cor dos décimos
-	love.graphics.setColor(255, 255, 255, 100)
+	love.graphics.setColor(255, 255, 255, 55)
 
 	if lineNumber == 0 or lineNumber % 10 == 0 then
 		-- Cor das unidades
-		love.graphics.setColor(255, 255, 255, 255)
+		love.graphics.setColor(255, 255, 255, 100)
 	end
 
 	-- Desenha a linha
