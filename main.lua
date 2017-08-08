@@ -42,7 +42,7 @@ function love.load()
 		text = "Precision",
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
-		w = 7 + 27 + 12, -- + gooi.getFont():getWidth(" Precision") + 6,
+		w = 66 + gooi.getFont():getWidth(" Precision"),
 		h = love.graphics.getHeight() * 0.05
 	})
 
