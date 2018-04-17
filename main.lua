@@ -5,7 +5,8 @@ function love.load()
 	scale = 297
 	currentTouch = {
 		x = 0,
-		y = 0
+		y = 0,
+		angleControl = false
 	}
 
 	require("util")
@@ -142,12 +143,12 @@ function love.update(dt)
 	triangle.base = math.cos(math.rad(angle)) * unitCircle.radius
 
 	-- Update the angle if the screen is being touched
-	if currentTouch.id ~= nil then
+	if currentTouch.id ~= nil and currentTouch.angleControl then
 		setAngle(love.touch.getPosition(currentTouch.id))
 	end
 
 	-- Update the angle if the mouse button 1 is being pressed
-	if love.mouse.isDown(1) then
+	if love.mouse.isDown(1) and currentTouch.angleControl then
 		setAngle(love.mouse.getPosition())
 	end
 
@@ -183,5 +184,15 @@ function love.touchreleased(touchid)
 	currentTouch.id = nil
 end
 
-function love.mousepressed(x, y, button)  gooi.pressed() end
-function love.mousereleased(x, y, button) gooi.released() end
+function love.mousepressed(x, y, button)
+	gooi.pressed()
+
+	-- Check if the interaction is with the angle
+	if x < scaleSlider.x and y < precisionCheck.y then
+		currentTouch.angleControl = true
+	end
+end
+function love.mousereleased(x, y, button)
+	gooi.released()
+	currentTouch.angleControl = false
+end
