@@ -61,16 +61,14 @@ function drawGridLine(lineNumber, pos, vert)
 end
 
 function setAngle(targetx, targety)
-	if targetx < scaleSlider.x and targety < precisionCheck.y then
-		opposite = love.graphics.getHeight()/2 - targety
-		adjacent = targetx - love.graphics.getWidth()/2
+	opposite = love.graphics.getHeight()/2 - targety
+	adjacent = targetx - love.graphics.getWidth()/2
 
-		arcTg = math.atan2(opposite, adjacent)
+	arcTg = math.atan2(opposite, adjacent)
 
-		if arcTg < 0 then
-			angle = 360 + math.deg(arcTg)
-		else
-			angle = math.deg(arcTg)
-		end
+	if arcTg < 0 then
+		angle = 360 + math.deg(arcTg)
+	else
+		angle = math.deg(arcTg)
 	end
 end
