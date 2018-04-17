@@ -2,7 +2,7 @@ require "lib/gooi"
 
 function love.load()
 	angle = 0
-	scale = 300
+	scale = 297
 	currentTouch = {
 		x = 0,
 		y = 0
@@ -42,12 +42,12 @@ function love.load()
 		text = "Precision",
 		x = love.graphics.getWidth() * 0.04,
 		y = love.graphics.getHeight() * 0.95,
-		w = 66 + gooi.getFont():getWidth(" Precision"),
+		w = 66 + gooi.getFont():getWidth("Precision"),
 		h = love.graphics.getHeight() * 0.05
 	})
 
 	scaleSlider = gooi.newSlider({
-		value = 250/950,
+		value = (scale - 50)/950,
 		x = love.graphics.getWidth() * 0.96,
 		y = love.graphics.getHeight() * 0.2,
 		w = love.graphics.getHeight() * 0.05,
@@ -59,6 +59,9 @@ end
 
 function love.update(dt)
 	gooi.update(dt)
+
+	-- Get the sliders values
+	scale = (scaleSlider:getValue() * 950) + 50
 
 	-- Keep the circle centered in case of screen resolution changes
 	unitCircle.x = love.graphics.getWidth() / 2 / scale
@@ -151,9 +154,6 @@ function love.update(dt)
 	if not precisionCheck.checked then
 		angle = math.ceil(angle)
 	end
-
-	-- Get the sliders values
-	scale = (scaleSlider:getValue() * 950) + 50
 
 	-- Reset the info printing position for the next frame
 	infoPos = 0
