@@ -33,11 +33,111 @@ function love.load()
 	cotangent.color = {r = 225, g = 178, b = 102, a = 255}
 	cosecant.color = {r = 255, g = 255, b = 102, a = 255}
 	secant.color = {r = 102, g = 178, b = 255, a = 255}
+	sine.infoPrefix = "Sin: "
+	cosine.infoPrefix = "Cos: "
+	tangent.infoPrefix = "Tg: "
+	cotangent.infoPrefix = "Ctg: "
+	cosecant.infoPrefix = "Cosec: "
+	secant.infoPrefix = "Sec: "
+	unitArc.infoPrefix = "Angle: "
+	unitArc.infoSufix = "°"
 
 	triangle.blendMode = 'add'
 	cosine.blendMode = 'replace'
 	secant.blendMode = 'add'
 	cosecant.blendMode = 'add'
+	unitArc.importantAngles = {
+		[30] = "π/6 rad",
+		[45] = "π/4 rad",
+		[60] = "π/3 rad",
+		[90] = "π/2 rad",
+		[120] = "2π/3 rad",
+		[135] = "3π/4 rad",
+		[150] = "5π/6 rad",
+		[180] = "π rad",
+		[210] = "7π/6 rad",
+		[225] = "5π/4 rad",
+		[240] = "4π/3 rad",
+		[270] = "3π/2 rad",
+		[300] = "5π/3 rad",
+		[315] = "7π/4 rad",
+		[330] = "11π/6 rad",
+		[360] = "2π rad"
+	}
+
+	sine.importantAngles = {
+		[30] = "1/2",
+		[45] = "√2/2",
+		[60] = "√3/2",
+		[120] = "√3/2",
+		[135] = "√2/2",
+		[150] = "1/2",
+		[210] = "-1/2",
+		[225] = "-√2/2",
+		[240] = "-√3/2",
+		[300] = "-√3/2",
+		[315] = "-√2/2",
+		[330] = "-1/2"
+	}
+
+	cosine.importantAngles = {
+		[30] = "√3/2",
+		[45] = "√2/2",
+		[60] = "1/2",
+		[120] = "-1/2",
+		[135] = "-√2/2",
+		[150] = "-√3/2",
+		[210] = "-√3/2",
+		[225] = "-√2/2",
+		[240] = "-1/2",
+		[300] = "1/2",
+		[315] = "√2/2",
+		[330] = "√3/2"
+	}
+
+	tangent.importantAngles = {
+		[30] = "√3/3",
+		[60] = "√3",
+		[120] = "-√3",
+		[150] = "-√3/3",
+		[210] = "√3/3",
+		[240] = "√3",
+		[300] = "-√3",
+		[330] = "-√3/3"
+	}
+
+	cotangent.importantAngles = {
+		[30] = "√3",
+		[60] = "√3/3",
+		[120] = "-√3/3",
+		[150] = "-√3",
+		[210] = "√3",
+		[240] = "√3/3",
+		[300] = "-√3/3",
+		[330] = "-√3"
+	}
+
+	cosecant.importantAngles = {
+		[45] = "√2",
+		[60] = "2√3/3",
+		[120] = "2√3/3",
+		[135] = "√2",
+		[225] = "-√2",
+		[240] = "-2√3/3",
+		[300] = "-2√3/3",
+		[315] = "-√2"
+	}
+
+	secant.importantAngles = {
+		[30] = "2√3/3",
+		[45] = "√2",
+		[135] = "-√2",
+		[150] = "-2√3/3",
+		[210] = "-2√3/3",
+		[225] = "-√2",
+		[315] = "√2",
+		[330] = "2√3/3"
+	}
 
 	precisionCheck = gooi.newCheck({
 		text = "Precision",
@@ -79,22 +179,25 @@ function love.update(dt)
 	sine.y1 = unitCircle.y
 	sine.x2 = unitCircle.x
 	sine.y2 = sine.y1 - math.sin(math.rad(angle))
-	sine.info = "Sin: "..tonumber(string.format("%.3f", math.sin(math.rad(angle))))
+	sine.info = tonumber(string.format("%.3f", math.sin(math.rad(angle))))
+	sine:checkSufix(angle)
 
 	cosine.x1 = unitCircle.x
 	cosine.y1 = unitCircle.y
 	cosine.x2 = cosine.x1 + math.cos(math.rad(angle))
 	cosine.y2 = unitCircle.y
-	cosine.info = 	"Cos: "..tonumber(string.format("%.3f", math.cos(math.rad(angle))))
+	cosine.info = tonumber(string.format("%.3f", math.cos(math.rad(angle))))
+	cosine:checkSufix(angle)
 
 	tangent.x1 = unitCircle.x + unitCircle.radius
 	tangent.y1 = unitCircle.y
 	tangent.x2 = tangent.x1
 	tangent.y2 = tangent.y1 - math.tan(math.rad(angle))
 	if (angle == 90 or angle == 270) then
-		tangent.info = "Tg: Undefined"
+		tangent.info = "Undefined"
 	else
-		tangent.info = "Tg: "..tonumber(string.format("%.3f", math.tan(math.rad(angle))))
+		tangent.info = tonumber(string.format("%.3f", math.tan(math.rad(angle))))
+		tangent:checkSufix(angle)
 	end
 
 	cotangent.x1 = unitCircle.x
@@ -102,9 +205,10 @@ function love.update(dt)
 	cotangent.x2 = cotangent.x1 + 1/math.tan(math.rad(angle))
 	cotangent.y2 = cotangent.y1
 	if (angle == 0 or angle == 360 or angle == 180) then
-		cotangent.info = "Ctg: Undefined"
+		cotangent.info = "Undefined"
 	else
-		cotangent.info = "Ctg: "..tonumber(string.format("%.3f", 1 / math.tan(math.rad(angle))))
+		cotangent.info = tonumber(string.format("%.3f", 1 / math.tan(math.rad(angle))))
+		cotangent:checkSufix(angle)
 	end
 
 	cosecant.x1 = unitCircle.x
@@ -112,9 +216,10 @@ function love.update(dt)
 	cosecant.x2 = cotangent.x2
 	cosecant.y2 = cotangent.y2
 	if (angle == 0 or angle == 360 or angle == 180) then
-		cosecant.info = "Cosec: Undefined"
+		cosecant.info = "Undefined"
 	else
-		cosecant.info = "Cosec: "..tonumber(string.format("%.3f", 1 / math.sin(math.rad(angle))))
+		cosecant.info = tonumber(string.format("%.3f", 1 / math.sin(math.rad(angle))))
+		cosecant:checkSufix(angle)
 	end
 
 	secant.x1 = unitCircle.x
@@ -122,13 +227,15 @@ function love.update(dt)
 	secant.x2 = tangent.x2
 	secant.y2 = tangent.y2
 	if (angle == 90 or angle == 270) then
-		secant.info = "Sec: Undefined"
+		secant.info = "Undefined"
 	else
-		secant.info = "Sec: "..tonumber(string.format("%.3f", 1 / math.cos(math.rad(angle))))
+		secant.info = tonumber(string.format("%.3f", 1 / math.cos(math.rad(angle))))
+		secant:checkSufix(angle)
 	end
 
 	unitArc.angle2 = angle
-	unitArc.info = "Angle: "..tonumber(string.format("%.3f", angle)).."°"
+	unitArc.info = tonumber(string.format("%.3f", angle)) .. "°"
+	unitArc:checkSufix(angle)
 
 	angMark.angle2 = angle
 
