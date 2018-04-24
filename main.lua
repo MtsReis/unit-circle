@@ -1,6 +1,8 @@
 require "lib/gooi"
 
 function love.load()
+	love.graphics.setNewFont(34)
+
 	angle = 0
 	scale = 297
 	currentTouch = {
@@ -280,7 +282,7 @@ function love.draw()
 	cosecant:draw()
 	secant:draw()
 	gooi.draw()
-	love.graphics.print("Scale: "..scale, 10, 0, 0, 5)
+	love.graphics.print("Scale: "..scale, 10, 0, 0, 1)
 end
 
 function love.touchpressed(touchid)
