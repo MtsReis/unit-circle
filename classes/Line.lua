@@ -7,6 +7,9 @@ Line.x2 = Line.x1 + 1
 Line.y2 = Line.y1
 Line.color = {r = 255, g = 255, b = 255, a = 255}
 Line.info = ''
+Line.infoPrefix = ''
+Line.infoSufix = ''
+Line.importantAngles = {}
 Line.blendMode = "alpha"
 
 function Line:draw(dt)
@@ -24,9 +27,17 @@ function Line:draw(dt)
 
 	-- Print the object and its info
 	love.graphics.line(e(self.x1), e(self.y1), e(self.x2), e(self.y2))
-	love.graphics.print(self.info, 10, infoPos * 80, 0, 5)
+	love.graphics.print(self.infoPrefix .. self.info .. self.infoSufix, 10, infoPos * 80, 0, 5)
 
 	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
 	love.graphics.setBlendMode(blendD)
+end
+
+function Line:checkSufix(angleValue)
+	if self.importantAngles[angleValue] then
+		self.infoSufix = " (" .. self.importantAngles[angleValue] .. ")"
+	else
+		self.infoSufix = ""
+	end
 end
