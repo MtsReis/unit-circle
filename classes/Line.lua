@@ -27,7 +27,7 @@ function Line:draw(dt)
 
 	-- Print the object and its info
 	love.graphics.line(e(self.x1), e(self.y1), e(self.x2), e(self.y2))
-	love.graphics.print(self.infoPrefix .. self.info .. self.infoSufix, 10, infoPos * 80, 0, 5)
+	love.graphics.print(self.infoPrefix .. self.info .. self.infoSufix, 10, infoPos * 40, 0, 1)
 
 	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
