@@ -1,7 +1,7 @@
 require "lib/gooi"
 
 function love.load()
-	love.graphics.setNewFont(34)
+	love.graphics.setNewFont(54)
 
 	angle = 0
 	scale = 297
@@ -45,9 +45,9 @@ function love.load()
 	unitArc.infoSufix = "°"
 
 	triangle.blendMode = 'add'
-	cosine.blendMode = 'replace'
 	secant.blendMode = 'add'
 	cosecant.blendMode = 'add'
+
 	unitArc.importantAngles = {
 		[30] = "π/6 rad",
 		[45] = "π/4 rad",

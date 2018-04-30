@@ -29,7 +29,7 @@ function Arc:draw(dt)
 
 	-- Print the object and its info
 	love.graphics.arc(self.drawMode, e(self.x), e(self.y), e(self.radius), -math.rad(self.angle1), -math.rad(self.angle2))
-	love.graphics.print(self.infoPrefix .. self.info .. self.infoSufix, 10, infoPos * 40, 0, 1)
+	love.graphics.print(self.infoPrefix .. self.info .. self.infoSufix, 10, infoPos * 60, 0, 1)
 
 	-- Restore to the previous color and blendmode
 	love.graphics.setColor(rD, gD, bD, aD)
